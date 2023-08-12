@@ -216,7 +216,7 @@ export const updateProductController = async (req, res) => {
       req.params.pid,
       { ...req.fields, slug: slugify(name) },
       { new: true }
-    );
+    ).populate("category");
     if (photo) {
       // products.photo.data = fs.readFileSync(photo.path);
       // products.photo.contentType = photo.type;
@@ -296,7 +296,7 @@ export const productListController = async (req, res) => {
       .find({})
       .skip((page - 1) * perPage)
       .limit(perPage)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).populate("category");
     const productsWithBase64Images = products.map((product) => ({
       ...product.toObject(),
       base64Image: product.photo.data.toString("base64"),
