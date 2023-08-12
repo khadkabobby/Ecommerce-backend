@@ -24,6 +24,12 @@ app.use(
     credentials: true, // If you need to include cookies in the request
   })
 );
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173", // Replace with your React app's URL
+//     credentials: true, // If you need to include cookies in the request
+//   })
+// );
 app.use(express.json());
 app.use(morgan("dev"));
 

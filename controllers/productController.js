@@ -252,7 +252,7 @@ export const productFiltersController = async (req, res) => {
       args.price = { $gte: radio[0], $lte: radio[1] };
     }
 
-    const products = await productModel.find(args);
+    const products = await productModel.find(args).populate("category");
     const productsWithBase64Images = products.map((product) => ({
       ...product.toObject(),
       base64Image: product.photo.data.toString("base64"),
@@ -353,15 +353,15 @@ export const similarProductsController = async (req, res) => {
       })
       .limit(3)
       .populate("category");
-      const productsWithBase64Images = products.map((product) => ({
-        ...product.toObject(),
-        base64Image: product.photo.data.toString("base64"),
-      }));
-      res.status(200).send({
-        success: true,
-        countTotal: productsWithBase64Images.length,
-        products: productsWithBase64Images,
-      });
+    const productsWithBase64Images = products.map((product) => ({
+      ...product.toObject(),
+      base64Image: product.photo.data.toString("base64"),
+    }));
+    res.status(200).send({
+      success: true,
+      countTotal: productsWithBase64Images.length,
+      products: productsWithBase64Images,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({
@@ -372,11 +372,11 @@ export const similarProductsController = async (req, res) => {
   }
 };
 
-export const categoryProductController=async(req,res)=>{
+export const categoryProductController = async (req, res) => {
   try {
-    const {slug}=req.params;
-    const category=await categoryModel.findOne({slug});
-    const products=await productModel.find({category}).populate('category');
+    const { slug } = req.params;
+    const category = await categoryModel.findOne({ slug });
+    const products = await productModel.find({ category }).populate("category");
     const productsWithBase64Images = products.map((product) => ({
       ...product.toObject(),
       base64Image: product.photo.data.toString("base64"),
@@ -390,10 +390,9 @@ export const categoryProductController=async(req,res)=>{
   } catch (error) {
     console.log(error);
     res.status(400).send({
-      success:false,
-      message:"Error while getting products according to category",
-      error
-    })
-    
+      success: false,
+      message: "Error while getting products according to category",
+      error,
+    });
   }
-}
+};
