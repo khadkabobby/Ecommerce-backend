@@ -18,10 +18,9 @@ connectDb();
 const app = express();
 
 //middlewares
-app.use(cors());
 app.use(
   cors({
-    origin: "https://bobcom.netlify.app/", // Replace with your React app's URL
+    origin: "https://bobcom.netlify.app", // Replace with your React app's URL
     credentials: true, // If you need to include cookies in the request
   })
 );
